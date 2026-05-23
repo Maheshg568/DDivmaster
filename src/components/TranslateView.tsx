@@ -34,90 +34,92 @@ export default function TranslateView() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#0B0F19]">
-      {/* Toolbar */}
-      <div className="flex items-center gap-4 p-6 border-b border-white/5">
-        <Languages className="w-5 h-5 text-purple-400" />
-        <h2 className="text-lg font-semibold text-zinc-100 mr-4">Translate Code</h2>
-        
-        <select 
-          value={sourceLang} 
-          onChange={(e) => setSourceLang(e.target.value)}
-          className="bg-[#131722] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-zinc-200 outline-none focus:border-purple-500/50"
-        >
-          {LANGUAGES.map(l => <option key={l} value={l}>{l}</option>)}
-        </select>
+    <div className="min-h-full bg-[#0b0f19] text-white">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 py-6 md:py-8">
+        <div className="mb-6 md:mb-7">
+          <div className="flex items-center gap-3 mb-4">
+            <Languages className="w-5 h-5 text-zinc-300" />
+            <h2 className="text-xl font-semibold text-white">Translate Code</h2>
+          </div>
 
-        <ArrowRight className="w-4 h-4 text-zinc-500" />
+          <div className="flex flex-wrap items-center gap-4">
+            <select
+              value={sourceLang}
+              onChange={(e) => setSourceLang(e.target.value)}
+              className="w-full sm:w-[240px] h-11 bg-[#121826] border border-[rgba(255,255,255,0.08)] rounded-xl px-3 text-sm text-zinc-200 outline-none focus:border-purple-500/50"
+            >
+              {LANGUAGES.map(l => <option key={l} value={l}>{l}</option>)}
+            </select>
 
-        <select 
-          value={targetLang} 
-          onChange={(e) => setTargetLang(e.target.value)}
-          className="bg-[#131722] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-zinc-200 outline-none focus:border-purple-500/50"
-        >
-          {LANGUAGES.map(l => <option key={l} value={l}>{l}</option>)}
-        </select>
+            <ArrowRight className="w-4 h-4 text-zinc-500 hidden sm:block" />
 
-        <button
-          onClick={handleTranslate}
-          disabled={isLoading}
-          className="ml-auto px-6 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-medium flex items-center gap-2 transition-all disabled:opacity-50"
-        >
-          {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Languages className="w-4 h-4" />}
-          {isLoading ? 'Translating...' : 'Translate'}
-        </button>
-      </div>
+            <select
+              value={targetLang}
+              onChange={(e) => setTargetLang(e.target.value)}
+              className="w-full sm:w-[240px] h-11 bg-[#121826] border border-[rgba(255,255,255,0.08)] rounded-xl px-3 text-sm text-zinc-200 outline-none focus:border-purple-500/50"
+            >
+              {LANGUAGES.map(l => <option key={l} value={l}>{l}</option>)}
+            </select>
 
-      {/* Split Content */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Source */}
-        <div className="w-1/2 border-r border-white/5 flex flex-col p-6">
-          <label className="text-sm text-zinc-400 mb-2">Source Code ({sourceLang})</label>
-          <textarea
-            value={sourceCode}
-            onChange={(e) => setSourceCode(e.target.value)}
-            className="flex-1 bg-[#131722] border border-white/10 rounded-xl p-4 text-zinc-200 font-mono text-sm resize-none focus:outline-none focus:border-purple-500/50 transition-colors custom-scrollbar"
-            placeholder={`Paste your ${sourceLang} code here...`}
-          />
+            <button
+              onClick={handleTranslate}
+              disabled={isLoading}
+              className="w-full sm:w-auto sm:ml-auto h-11 px-6 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-medium flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+            >
+              {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Languages className="w-4 h-4" />}
+              {isLoading ? 'Translating...' : 'Translate'}
+            </button>
+          </div>
         </div>
 
-        {/* Target */}
-        <div className="w-1/2 flex flex-col p-6 bg-[#0B0F19]">
-          <label className="text-sm text-zinc-400 mb-2">Translated Code ({targetLang})</label>
-          <ScrollArea className="flex-1 bg-[#131722] border border-white/10 rounded-xl p-4">
-            {result ? (
-              <div className="prose prose-invert max-w-none prose-pre:bg-transparent prose-pre:border-none prose-pre:m-0 prose-pre:p-0">
-                <ReactMarkdown
-                  components={{
-                    code({ node, inline, className, children, ...props }: any) {
-                      const match = /language-(\w+)/.exec(className || '');
-                      return !inline && match ? (
-                        <SyntaxHighlighter
-                          style={vscDarkPlus as any}
-                          language={match[1]}
-                          PreTag="div"
-                          className="rounded-md !m-0 !bg-transparent"
-                          {...props}
-                        >
-                          {String(children).replace(/\n$/, '')}
-                        </SyntaxHighlighter>
-                      ) : (
-                        <code className="bg-white/10 px-1.5 py-0.5 rounded-md text-sm" {...props}>
-                          {children}
-                        </code>
-                      );
-                    }
-                  }}
-                >
-                  {result}
-                </ReactMarkdown>
-              </div>
-            ) : (
-              <div className="h-full flex items-center justify-center text-zinc-500">
-                Translation will appear here.
-              </div>
-            )}
-          </ScrollArea>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex flex-col min-w-0">
+            <label className="text-sm text-[#94a3b8] mb-2">Source Code ({sourceLang})</label>
+            <textarea
+              value={sourceCode}
+              onChange={(e) => setSourceCode(e.target.value)}
+              className="h-[420px] w-full overflow-y-auto overflow-x-auto bg-[#121826] border border-[rgba(255,255,255,0.08)] rounded-2xl p-4 text-zinc-200 font-mono text-sm resize-none focus:outline-none focus:border-purple-500/50 transition-colors custom-scrollbar"
+              placeholder={`Paste your ${sourceLang} code here...`}
+            />
+          </div>
+
+          <div className="flex flex-col min-w-0">
+            <label className="text-sm text-[#94a3b8] mb-2">Translated Code ({targetLang})</label>
+            <ScrollArea className="h-[420px] w-full overflow-y-auto overflow-x-auto bg-[#121826] border border-[rgba(255,255,255,0.08)] rounded-2xl p-4 custom-scrollbar">
+              {result ? (
+                <div className="prose prose-invert max-w-none prose-pre:bg-transparent prose-pre:border-none prose-pre:m-0 prose-pre:p-0">
+                  <ReactMarkdown
+                    components={{
+                      code({ node, inline, className, children, ...props }: any) {
+                        const match = /language-(\w+)/.exec(className || '');
+                        return !inline && match ? (
+                          <SyntaxHighlighter
+                            style={vscDarkPlus as any}
+                            language={match[1]}
+                            PreTag="div"
+                            className="rounded-md !m-0 !bg-transparent"
+                            {...props}
+                          >
+                            {String(children).replace(/\n$/, '')}
+                          </SyntaxHighlighter>
+                        ) : (
+                          <code className="bg-white/10 px-1.5 py-0.5 rounded-md text-sm" {...props}>
+                            {children}
+                          </code>
+                        );
+                      }
+                    }}
+                  >
+                    {result}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                <div className="h-full min-h-[388px] flex items-center justify-center text-[#94a3b8] text-center">
+                  Translation will appear here.
+                </div>
+              )}
+            </ScrollArea>
+          </div>
         </div>
       </div>
     </div>
