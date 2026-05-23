@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Div Master Extension",
+  "version": "1.0",
+  "description": "Your AI-powered coding companion right in your browser.",
+  "action": {
+    "default_popup": "chrome-extension/popup.html",
+    "default_title": "Open Div Master"
+  },
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://generativelanguage.googleapis.com/*"
+  ]
+}
