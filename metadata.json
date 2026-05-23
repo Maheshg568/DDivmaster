@@ -1,5 +1,0 @@
-{
-  "name": "AI Dev Master",
-  "description": "Intelligent AI-Powered Developer Assistant for coding, debugging, and code conversion.",
-  "requestFramePermissions": ["microphone"]
-}
